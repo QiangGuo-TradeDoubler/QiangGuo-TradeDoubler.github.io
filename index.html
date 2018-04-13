@@ -1,5 +1,9 @@
 <script language="javascript">
 var url= window.location.href;
-var access_token = url.match(/\access_token\=([\S\s]*?)\&/)[1];
-document.write(access_token);
+if( url.match(/access_token/) ) {
+	document.write(url.match(/\access_token\=([\S\s]*?)\&/)[1]);
+} else {
+	window.location.href = "https://ssologin.tdtest.net/auth/realms/tradedoubler/protocol/openid-connect/auth?response_type=id_token%20token&client_id=ui-access&redirect_uri=https%3A%2F%2Fqiangguo-tradedoubler.github.io/index.html&nonce=n-0S6_WzA2";
+}
+
 </script>
