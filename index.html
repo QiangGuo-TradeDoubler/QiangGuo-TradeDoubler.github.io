@@ -38,6 +38,13 @@
                 $("#balance-tobe-paid").text(responseBody.totalBalanceToBePaid);
             };
 
+            var renderAds = function (response) {
+                const hits = response.hits.hits;
+                $.each(hits, function( index, value ) {
+                    $('#ads-list').prepend('<li><img src=' + value._source.url +' /></li>');
+                });
+            };
+
             var renderLogonAccountInfo = function (user) {
                 $("#access-token").text(user.access_token);
             };
@@ -48,6 +55,7 @@
                 const restUtils = new RestUtils().withBaseUrl("https://gppapi.tdtest.net").withUser(user);
                 restUtils.doGet("/v0/management/user/settings/me", renderUserInfo);
                 restUtils.doGet("/v0/transaction/payment/reporting/accountbalance", renderTransactionInfo);
+                restUtils.doGet("/v0/ads/countries/all/sources/all/ads/search?formats=Image", renderAds);
             };
 
             (function login() {
@@ -103,6 +111,12 @@
                 <li><label for="account-balance">Account balance:</label> <span id="account-balance">100</span></li>
                 <li><label for="balance-tobe-paid">Balance to be paid:</label> <span id="balance-tobe-paid">100</span></li>
             </ul>
+        </fieldset>
+    </div>
+    <div id="ads">
+        <fieldset>
+            <legend>Ads:</legend>
+            <ul id="ads-list"> </ul>
         </fieldset>
     </div>
     <div>
