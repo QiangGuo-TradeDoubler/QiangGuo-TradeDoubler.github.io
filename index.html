@@ -1,9 +1,87 @@
-<script language="javascript">
-var url= window.location.href;
-if( url.match(/access_token/) ) {
-	document.write(url.match(/\access_token\=([\S\s]*?)\&/)[1]);
-} else {
-	window.location.href = "https://ssologin.tdtest.net/auth/realms/tradedoubler/protocol/openid-connect/auth?response_type=id_token%20token&client_id=ui-access&redirect_uri=https%3A%2F%2Fqiangguo-tradedoubler.github.io/index.html&nonce=n-0S6_WzA2";
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TDConnect APIs Showcase</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.4.1/oidc-client.min.js"></script>
+    <script type="module">
+        import RestUtils from './RestUtils.js';
 
-</script>
+        $(function() {
+            var mgr = new Oidc.UserManager({
+                authority: 'https://ssologin.tdtest.net/auth/realms/tradedoubler/.well-known/openid-configuration',
+                client_id: 'ui-access',
+                redirect_uri: 'http://localhost:8080',
+                post_logout_redirect_uri: 'http://localhost:8080',
+                response_type: 'id_token token',
+                scope: 'openid',
+                loadUserInfo: true
+            });
+
+            var renderUserInfo = function (response) {
+                $("#user-id").text(response.id);
+                $("#username").text(response.userName);
+                $("#firstname").text(response.firstName);
+                $("#lastnamename").text(response.lastName);
+                $("#org-id").text(response.orgId);
+            };
+
+            var withUser = function(user) {
+                $("#access-token").text(user.access_token);
+
+                const restUtils = new RestUtils().withBaseUrl("https://gppapi.tdtest.net").withUser(user);
+                restUtils.doGet("/v0/management/user/settings/me", renderUserInfo);
+            };
+
+            (function login() {
+                mgr.clearStaleState();
+                mgr.removeUser();
+                mgr.signinRedirectCallback().then(function (user) {
+                    withUser(user);
+                }).catch(function (err) {
+                    console.log("Can't determine the user. Force logging in...");
+                    mgr.signinRedirect();
+                });
+            })(withUser);
+
+            function signout() {
+                mgr.signoutRedirect();
+            }
+
+            $("#logout").click(function () {
+                mgr.signoutRedirect();
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>APIs Showcase</h1>
+    <div id="logon-account-info">
+        <fieldset>
+            <legend>Logon account:</legend>
+            <ul>
+                <li><label for="access-token">Access token:</label> <span id="access-token">mytoken</span></li>
+            </ul>
+        </fieldset>
+    </div>
+    <div id="user-info">
+        <fieldset>
+            <legend>User info:</legend>
+            <ul>
+                <li><label for="user-id">User Id:</label> <span id="user-id">123456</span></li>
+                <li><label for="username">Username:</label> <span id="username">Username</span></li>
+                <li><label for="firstname">First name:</label> <span id="firstname">First name</span></li>
+                <li><label for="lastname">Last name:</label> <span id="lastname">Last name</span></li>
+                <li><label for="org-id">Organization Id:</label> <span id="org-id">123456</span></li>
+            </ul>
+        </fieldset>
+    </div>
+    <div>
+        <button type="button" id="logout">Logout</button>
+    </div>
+
+</body>
+</html>
