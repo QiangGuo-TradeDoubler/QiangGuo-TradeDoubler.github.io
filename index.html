@@ -14,8 +14,8 @@
             var mgr = new Oidc.UserManager({
                 authority: 'https://ssologin.tdtest.net/auth/realms/tradedoubler/.well-known/openid-configuration',
                 client_id: 'ui-access',
-                redirect_uri: 'http://localhost:8080',
-                post_logout_redirect_uri: 'http://localhost:8080',
+                redirect_uri: 'https://qiangguo-tradedoubler.github.io/index.html',
+                post_logout_redirect_uri: 'https://qiangguo-tradedoubler.github.io/index.html',
                 response_type: 'id_token token',
                 scope: 'openid',
                 loadUserInfo: true
