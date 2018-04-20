@@ -29,11 +29,25 @@
                 $("#org-id").text(response.orgId);
             };
 
-            var withUser = function(user) {
+            var renderTransactionInfo = function (response) {
+                const responseBody = response.responseBody;
+                $("#currency").text(responseBody.currency);
+                $("#next-payment-date").text(responseBody.nextPaymentDate);
+                $("#pending-earnings").text(responseBody.pendingEarnings);
+                $("#account-balance").text(responseBody.totalAccountBalance);
+                $("#balance-tobe-paid").text(responseBody.totalBalanceToBePaid);
+            };
+
+            var renderLogonAccountInfo = function (user) {
                 $("#access-token").text(user.access_token);
+            };
+
+            var withUser = function(user) {
+                renderLogonAccountInfo(user);
 
                 const restUtils = new RestUtils().withBaseUrl("https://gppapi.tdtest.net").withUser(user);
                 restUtils.doGet("/v0/management/user/settings/me", renderUserInfo);
+                restUtils.doGet("/v0/transaction/payment/reporting/accountbalance", renderTransactionInfo);
             };
 
             (function login() {
@@ -76,6 +90,18 @@
                 <li><label for="firstname">First name:</label> <span id="firstname">First name</span></li>
                 <li><label for="lastname">Last name:</label> <span id="lastname">Last name</span></li>
                 <li><label for="org-id">Organization Id:</label> <span id="org-id">123456</span></li>
+            </ul>
+        </fieldset>
+    </div>
+    <div id="transaction-info">
+        <fieldset>
+            <legend>Transaction info:</legend>
+            <ul>
+                <li><label for="currency">Currency:</label> <span id="currency">SEK</span></li>
+                <li><label for="next-payment-date">Next payment date:</label> <span id="next-payment-date">2018-04-20</span></li>
+                <li><label for="pending-earnings">Pending earnings:</label> <span id="pending-earnings">100</span></li>
+                <li><label for="account-balance">Account balance:</label> <span id="account-balance">100</span></li>
+                <li><label for="balance-tobe-paid">Balance to be paid:</label> <span id="balance-tobe-paid">100</span></li>
             </ul>
         </fieldset>
     </div>
