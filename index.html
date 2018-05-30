@@ -78,18 +78,19 @@
                 mgr.signoutRedirect();
             });
 			
-			var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
-
-			copyTextareaBtn.addEventListener('click', function(event) {
-					$("#access-token").focus();
-					$("#access-token").text.select();
-
-			  try {
-				var successful = document.execCommand('copy');
-			  } catch (err) {
-				console.log('Oops, unable to copy');
+			var label = $("#access-token");
+			label.onclick = function() {
+			  document.execCommand("copy");
+			}
+			
+			label.addEventListener("copy", function(event) {
+			  event.preventDefault();
+			  if (event.clipboardData) {
+				event.clipboardData.setData("text/plain", label.text);
 			  }
 			});
+
+
         });
     </script>
 </head>
@@ -101,7 +102,6 @@
             <ul>
                 <li><label for="access-token">Access token:</label> <label id="access-token">mytoken1</label></li>
             </ul>
-			<p><button class="js-textareacopybtn" style="vertical-align:top;">Copy Token</button>
 
         </fieldset>
     </div>
