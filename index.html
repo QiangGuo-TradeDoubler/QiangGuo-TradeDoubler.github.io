@@ -76,6 +76,21 @@
             $("#logout").click(function () {
                 mgr.signoutRedirect();
             });
+			
+			var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
+
+			copyTextareaBtn.addEventListener('click', function(event) {
+					var copyTextarea = document.querySelector('.js-copytextarea');
+					copyTextarea.select();
+
+			  try {
+				var successful = document.execCommand('copy');
+				var msg = successful ? 'successful' : 'unsuccessful';
+				console.log('Copying text command was ' + msg);
+			  } catch (err) {
+				console.log('Oops, unable to copy');
+			  }
+			});
         });
     </script>
 </head>
@@ -85,8 +100,10 @@
         <fieldset>
             <legend>Logon account:</legend>
             <ul>
-                <li><label for="access-token">Access token:</label> <span id="access-token">mytoken</span></li>
+                <li><label class="js-copytextarea" for="access-token">Access token:</label> <span id="access-token">mytoken</span></li>
             </ul>
+			<p><button class="js-textareacopybtn" style="vertical-align:top;">Copy Token</button>
+
         </fieldset>
     </div>
     <div id="user-info">
