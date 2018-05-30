@@ -80,14 +80,14 @@
 			
 			const span = document.querySelector("span");
 			span.onclick = function() {
-			 alert(span.text());
+			 alert(span.textContent);
 			  document.execCommand("copy");
 			}
 			
 			span.addEventListener("copy", function(event) {
 			  event.preventDefault();
 			  if (event.clipboardData) {
-				event.clipboardData.setData("text/plain", span.text);
+				event.clipboardData.setData("text/plain", span.textContent);
 			  }
 			});
 
