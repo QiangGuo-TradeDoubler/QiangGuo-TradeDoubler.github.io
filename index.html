@@ -80,7 +80,6 @@
 			
 			const span = document.querySelector("span");
 			span.onclick = function() {
-			 alert(span.textContent);
 			  document.execCommand("copy");
 			}
 			
@@ -88,6 +87,7 @@
 			  event.preventDefault();
 			  if (event.clipboardData) {
 				event.clipboardData.setData("text/plain", span.textContent);
+				alert("Token copied to clipboard");
 			  }
 			});
 
