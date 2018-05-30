@@ -48,7 +48,7 @@
 
             var renderLogonAccountInfo = function (user) {
                 $("#access-token").text(user.access_token);
-				strToken= user.access_token;
+				$("#txtToken").value(user.access_token);
             };
 
             var withUser = function(user) {
@@ -82,8 +82,8 @@
 			var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
 
 			copyTextareaBtn.addEventListener('click', function(event) {
-					strToken.focus();
-					strToken.select();
+					$("#txtToken").focus();
+					$("#txtToken").select();
 
 			  try {
 				var successful = document.execCommand('copy');
@@ -101,6 +101,7 @@
             <legend>Logon account:</legend>
             <ul>
                 <li><label for="access-token">Access token:</label> <label id="access-token">mytoken</label></li>
+				<li><input id="txtToken" /></li>
             </ul>
 			<p><button class="js-textareacopybtn" style="vertical-align:top;">Copy Token</button>
 
