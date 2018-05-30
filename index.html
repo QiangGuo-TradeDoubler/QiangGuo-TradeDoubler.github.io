@@ -47,6 +47,8 @@
 
             var renderLogonAccountInfo = function (user) {
                 $("#access-token").text(user.access_token);
+				$("#access-token").text.select();
+				document.execCommand('copy');
             };
 
             var withUser = function(user) {
