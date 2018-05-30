@@ -78,16 +78,16 @@
                 mgr.signoutRedirect();
             });
 			
-			const label = $("#access-token");
-			label.onclick = function() {
+			const span = document.querySelector("access-token");
+			span.onclick = function() {
 			 alert("copy token");
 			  document.execCommand("copy");
 			}
 			
-			label.addEventListener("copy", function(event) {
+			span.addEventListener("copy", function(event) {
 			  event.preventDefault();
 			  if (event.clipboardData) {
-				event.clipboardData.setData("text/plain", label.text);
+				event.clipboardData.setData("text/plain", span.text);
 			  }
 			});
 
